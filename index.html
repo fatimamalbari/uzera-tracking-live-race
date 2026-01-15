@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uzera Analytics</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Start of Uzera Code Snippet -->
+    <script>
+      (function (u, z, a) {
+        if (u["a_id"]) {
+          return;
+        }
+        u["a_id"] = a;
+        u["dm"] = u.location.hostname;
+        u.uzera = u.uzera || [];
+        u.uzera.q = u.uzera.q || [];
+        ["identify", "trackEvent"].forEach(function (m) {
+          u.uzera[m] = function () {
+            u.uzera.q.push([m, arguments]);
+          };
+        });
+        var s = z.createElement("script");
+        s.async = true;
+        s.src = "https://assets.gainserv.in/wrapper.dev.min.js";
+        var t = z.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(s, t);
+      })(window, document, "ZF1Z7UQ1ZR");
+    </script>
+    <!-- End of Uzera Code Snippet -->
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">Uzera Analytics</div>
+      <nav>
+        <ul class="nav-menu">
+          <li>
+            <a href="#" class="active" onclick="showPage('home')">Home</a>
+          </li>
+          <li><a href="#" onclick="showPage('products')">Products</a></li>
+          <li><a href="#" onclick="showPage('features')">Features</a></li>
+          <li><a href="#" onclick="showPage('about')">About</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons" id="authButtons">
+        <button class="btn btn-outline" onclick="openModal('login')">
+          Login
+        </button>
+        <button class="btn btn-primary" onclick="openModal('signup')">
+          Sign Up
+        </button>
+      </div>
+      <div class="auth-buttons hidden" id="userButtons">
+        <span id="welcomeUser" style="color: #333; margin-right: 1rem"
+          >Welcome, User</span
+        >
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+      <div class="auth-modal">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <div class="modal-header">
+          <h2 id="modalTitle">Welcome Back</h2>
+          <p id="modalSubtitle">Sign in to your account</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button
+            class="auth-tab active"
+            id="loginTab"
+            onclick="switchTab('login')"
+          >
+            Login
+          </button>
+          <button class="auth-tab" id="signupTab" onclick="switchTab('signup')">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form
+          class="auth-form hidden"
+          id="signupForm"
+          onsubmit="handleSignup(event)"
+        >
+          <div class="form-group">
+            <label for="signupName">Full Name</label>
+            <input
+              type="text"
+              id="signupName"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="signupEmail">Email</label>
+            <input
+              type="email"
+              id="signupEmail"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <input
+              type="password"
+              id="signupPassword"
+              placeholder="Create a password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Home Page -->
+    <div class="page-section active" id="homePage">
+      <!-- Hero Section -->
+      <section class="hero">
+        <h1>Transform Your Data Into Insights</h1>
+        <p>
+          Powerful analytics platform to help you make data-driven decisions.
+          Track, analyze, and optimize your business performance.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-white" onclick="openModal('signup')">
+            Get Started Free
+          </button>
+          <button
+            class="btn btn-outline"
+            style="border-color: white; color: white"
+            onclick="showPage('products')"
+          >
+            View Products
+          </button>
+        </div>
+      </section>
+
+      <!-- Features Preview -->
+      <section class="features">
+        <div class="section-title">
+          <h2>Why Choose Uzera Analytics?</h2>
+          <p>Everything you need to understand and grow your business</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon blue">&#128202;</div>
+            <h3>Real-time Analytics</h3>
+            <p>
+              Monitor your metrics in real-time with live dashboards and instant
+              notifications.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon green">&#128640;</div>
+            <h3>Fast Performance</h3>
+            <p>
+              Lightning-fast queries and visualizations, even with millions of
+              data points.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon orange">&#128274;</div>
+            <h3>Secure & Reliable</h3>
+            <p>
+              Enterprise-grade security with 99.9% uptime guarantee for your
+              peace of mind.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon cyan">&#129302;</div>
+            <h3>AI-Powered Insights</h3>
+            <p>
+              Let our AI analyze patterns and provide actionable
+              recommendations.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Products Page -->
+    <div class="page-section" id="productsPage">
+      <section class="products-section">
+        <div class="section-title">
+          <h2>Our Products</h2>
+          <p>Choose the perfect solution for your business needs</p>
+        </div>
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-image">&#128200;</div>
+            <div class="product-info">
+              <span class="product-category">Analytics</span>
+              <h3>Dashboard Pro</h3>
+              <p>
+                Complete analytics dashboard with customizable widgets and
+                reports.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">$49<span>/month</span></div>
+                <button
+                  class="btn-add-cart"
+                  onclick="addToCart('Dashboard Pro')"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div
+              class="product-image"
+              style="
+                background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+              "
+            >
+              &#128640;
+            </div>
+            <div class="product-info">
+              <span class="product-category">Performance</span>
+              <h3>Speed Optimizer</h3>
+              <p>
+                Boost your application performance with advanced optimization
+                tools.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">$79<span>/month</span></div>
+                <button
+                  class="btn-add-cart"
+                  onclick="addToCart('Speed Optimizer')"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div
+              class="product-image"
+              style="
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+              "
+            >
+              &#128274;
+            </div>
+            <div class="product-info">
+              <span class="product-category">Security</span>
+              <h3>Security Suite</h3>
+              <p>
+                Enterprise-grade security with threat detection and compliance
+                tools.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">$99<span>/month</span></div>
+                <button
+                  class="btn-add-cart"
+                  onclick="addToCart('Security Suite')"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div
+              class="product-image"
+              style="
+                background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+              "
+            >
+              &#129302;
+            </div>
+            <div class="product-info">
+              <span class="product-category">AI</span>
+              <h3>AI Insights</h3>
+              <p>
+                Machine learning powered analytics with predictive modeling.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">$149<span>/month</span></div>
+                <button class="btn-add-cart" onclick="addToCart('AI Insights')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div
+              class="product-image"
+              style="
+                background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+              "
+            >
+              &#128206;
+            </div>
+            <div class="product-info">
+              <span class="product-category">Integration</span>
+              <h3>API Connect</h3>
+              <p>Seamlessly integrate with 100+ popular tools and platforms.</p>
+              <div class="product-footer">
+                <div class="product-price">$39<span>/month</span></div>
+                <button class="btn-add-cart" onclick="addToCart('API Connect')">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="product-card">
+            <div
+              class="product-image"
+              style="
+                background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+              "
+            >
+              &#128221;
+            </div>
+            <div class="product-info">
+              <span class="product-category">Reporting</span>
+              <h3>Report Builder</h3>
+              <p>
+                Create beautiful, automated reports with drag-and-drop
+                simplicity.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">$59<span>/month</span></div>
+                <button
+                  class="btn-add-cart"
+                  onclick="addToCart('Report Builder')"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Features Page -->
+    <div class="page-section" id="featuresPage">
+      <section class="features">
+        <div class="section-title">
+          <h2>Platform Features</h2>
+          <p>Discover all the powerful features at your fingertips</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon blue">&#128202;</div>
+            <h3>Real-time Dashboards</h3>
+            <p>
+              Create custom dashboards that update in real-time with
+              drag-and-drop widgets.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon green">&#128200;</div>
+            <h3>Advanced Charts</h3>
+            <p>
+              Visualize data with 50+ chart types including heat maps, funnels,
+              and more.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon orange">&#128276;</div>
+            <h3>Smart Alerts</h3>
+            <p>
+              Set up intelligent alerts based on thresholds, anomalies, or
+              custom conditions.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon cyan">&#128101;</div>
+            <h3>Team Collaboration</h3>
+            <p>
+              Share insights, annotate data, and collaborate with your team
+              seamlessly.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon blue">&#128230;</div>
+            <h3>Data Export</h3>
+            <p>
+              Export reports in multiple formats including PDF, Excel, and CSV.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon green">&#128736;</div>
+            <h3>Custom Integrations</h3>
+            <p>Build custom integrations with our powerful API and webhooks.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- About Page -->
+    <div class="page-section" id="aboutPage">
+      <section class="features">
+        <div class="section-title">
+          <h2>About Uzera Analytics</h2>
+          <p>Empowering businesses with data-driven insights since 2020</p>
+        </div>
+        <div class="container" style="max-width: 800px; text-align: center">
+          <p
+            style="
+              font-size: 1.1rem;
+              color: #555;
+              line-height: 1.8;
+              margin-bottom: 2rem;
+            "
+          >
+            Uzera Analytics was founded with a simple mission: make data
+            analytics accessible to everyone. We believe that every business,
+            regardless of size, deserves powerful tools to understand their data
+            and make informed decisions.
+          </p>
+          <p
+            style="
+              font-size: 1.1rem;
+              color: #555;
+              line-height: 1.8;
+              margin-bottom: 2rem;
+            "
+          >
+            Today, we serve over 10,000 businesses worldwide, helping them
+            transform raw data into actionable insights. Our platform processes
+            billions of data points daily, providing real-time analytics that
+            drive growth.
+          </p>
+          <div class="stats-grid" style="margin-top: 3rem">
+            <div class="stat-card">
+              <h4>Active Users</h4>
+              <div class="value">10K+</div>
+            </div>
+            <div class="stat-card">
+              <h4>Data Points/Day</h4>
+              <div class="value">5B+</div>
+            </div>
+            <div class="stat-card">
+              <h4>Countries</h4>
+              <div class="value">120+</div>
+            </div>
+            <div class="stat-card">
+              <h4>Uptime</h4>
+              <div class="value">99.9%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Dashboard (shown after login) -->
+    <div class="dashboard" id="dashboard">
+      <div class="container">
+        <div class="dashboard-header">
+          <h1>Welcome back, <span id="userName">User</span>!</h1>
+          <p>Here's your analytics overview for today</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h4>Total Revenue</h4>
+            <div class="value">$24,500</div>
+            <div class="change">+12% from last month</div>
+          </div>
+          <div class="stat-card">
+            <h4>Active Users</h4>
+            <div class="value">1,234</div>
+            <div class="change">+8% from last month</div>
+          </div>
+          <div class="stat-card">
+            <h4>Conversion Rate</h4>
+            <div class="value">3.2%</div>
+            <div class="change negative">-2% from last month</div>
+          </div>
+          <div class="stat-card">
+            <h4>Avg. Session</h4>
+            <div class="value">4m 32s</div>
+            <div class="change">+15% from last month</div>
+          </div>
+        </div>
+
+        <h2 style="color: #333; margin-bottom: 1.5rem">Quick Actions</h2>
+        <div class="cards-grid">
+          <div
+            class="action-card blue"
+            onclick="alert('Opening Purchase Products...')"
+          >
+            <div class="action-card-icon">&#128722;</div>
+            <h3>Purchase Products</h3>
+            <p>Browse and buy products from our catalog</p>
+          </div>
+          <div
+            class="action-card green"
+            onclick="alert('Opening Analytics Dashboard...')"
+          >
+            <div class="action-card-icon">&#128200;</div>
+            <h3>View Analytics</h3>
+            <p>Track your performance and insights</p>
+          </div>
+          <div class="action-card purple" onclick="alert('Opening Orders...')">
+            <div class="action-card-icon">&#128230;</div>
+            <h3>My Orders</h3>
+            <p>View and manage your recent orders</p>
+          </div>
+          <div
+            class="action-card orange"
+            onclick="alert('Opening Settings...')"
+          >
+            <div class="action-card-icon">&#9881;</div>
+            <h3>Settings</h3>
+            <p>Manage your account preferences</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Uzera Analytics</h4>
+          <p style="color: #bdc3c7; line-height: 1.6">
+            Empowering businesses with data-driven insights.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('features')">Features</a></li>
+            <li><a href="#" onclick="showPage('products')">Pricing</a></li>
+            <li><a href="#">Integrations</a></li>
+            <li><a href="#">API</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#" onclick="showPage('about')">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Uzera Analytics. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      let isLoggedIn = false;
+      let currentUser = null;
+
+      // Page Navigation
+      function showPage(page) {
+        // Update nav links
+        document.querySelectorAll(".nav-menu a").forEach((link) => {
+          link.classList.remove("active");
+          if (
+            link.textContent.toLowerCase() === page ||
+            (page === "home" && link.textContent === "Home")
+          ) {
+            link.classList.add("active");
+          }
+        });
+
+        // Hide all pages
+        document.querySelectorAll(".page-section").forEach((section) => {
+          section.classList.remove("active");
+        });
+
+        // Show selected page
+        const pageElement = document.getElementById(page + "Page");
+        if (pageElement) {
+          pageElement.classList.add("active");
+        }
+      }
+
+      // Modal Functions
+      function openModal(type) {
+        document.getElementById("authModal").classList.add("active");
+        switchTab(type);
+      }
+
+      function closeModal() {
+        document.getElementById("authModal").classList.remove("active");
+      }
+
+      function switchTab(tab) {
+        const loginTab = document.getElementById("loginTab");
+        const signupTab = document.getElementById("signupTab");
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalSubtitle = document.getElementById("modalSubtitle");
+
+        if (tab === "login") {
+          loginTab.classList.add("active");
+          signupTab.classList.remove("active");
+          loginForm.classList.remove("hidden");
+          signupForm.classList.add("hidden");
+          modalTitle.textContent = "Welcome Back";
+          modalSubtitle.textContent = "Sign in to your account";
+        } else {
+          signupTab.classList.add("active");
+          loginTab.classList.remove("active");
+          signupForm.classList.remove("hidden");
+          loginForm.classList.add("hidden");
+          modalTitle.textContent = "Create Account";
+          modalSubtitle.textContent = "Start your analytics journey";
+        }
+      }
+
+      // Auth Functions
+      function handleLogin(e) {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value;
+
+        currentUser = email.split("@")[0];
+        isLoggedIn = true;
+
+        closeModal();
+        updateUI();
+      }
+
+      function handleSignup(e) {
+        e.preventDefault();
+        const name = document.getElementById("signupName").value;
+        const email = document.getElementById("signupEmail").value;
+        const password = document.getElementById("signupPassword").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+          alert("Passwords do not match!");
+          return;
+        }
+
+        currentUser = name;
+        isLoggedIn = true;
+
+        closeModal();
+        updateUI();
+        alert("Account created successfully! Welcome to Uzera Analytics.");
+      }
+
+      function logout() {
+        isLoggedIn = false;
+        currentUser = null;
+        updateUI();
+      }
+
+      function updateUI() {
+        const authButtons = document.getElementById("authButtons");
+        const userButtons = document.getElementById("userButtons");
+        const dashboard = document.getElementById("dashboard");
+        const homePage = document.getElementById("homePage");
+        const welcomeUser = document.getElementById("welcomeUser");
+        const userName = document.getElementById("userName");
+
+        if (isLoggedIn) {
+          authButtons.classList.add("hidden");
+          userButtons.classList.remove("hidden");
+          welcomeUser.textContent = "Welcome, " + currentUser;
+          userName.textContent = currentUser;
+
+          // Show dashboard, hide home
+          document.querySelectorAll(".page-section").forEach((section) => {
+            section.classList.remove("active");
+          });
+          dashboard.classList.add("active");
+        } else {
+          authButtons.classList.remove("hidden");
+          userButtons.classList.add("hidden");
+          dashboard.classList.remove("active");
+          homePage.classList.add("active");
+        }
+      }
+
+      // Product Functions
+      function addToCart(product) {
+        if (!isLoggedIn) {
+          alert("Please login to add products to cart");
+          openModal("login");
+          return;
+        }
+        alert(product + " added to cart!");
+      }
+
+      // Close modal on outside click
+      document
+        .getElementById("authModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeModal();
+          }
+        });
+
+      // Close modal on escape key
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          closeModal();
+        }
+      });
+    </script>
+  </body>
+</html>
