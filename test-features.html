@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uzera Analytics - Feature Testing</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Uzera Code Snippet -->
+    <script>
+      (function (u, z, a) {
+        if (u["a_id"]) {
+          return;
+        }
+        u["a_id"] = a;
+        u["dm"] = u.location.hostname;
+        u.uzera = u.uzera || [];
+        u.uzera.q = u.uzera.q || [];
+        ["identify", "trackEvent"].forEach(function (m) {
+          u.uzera[m] = function () {
+            u.uzera.q.push([m, arguments]);
+          };
+        });
+        var s = z.createElement("script");
+        s.async = true;
+        s.src = "https://assets.gainserv.in/wrapper.dev.min.js";
+        var t = z.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(s, t);
+      })(window, document, "ZF1Z7UQ1ZR");
+    </script>
+    <!-- End of Uzera Code Snippet -->
+    <style>
+      .test-section {
+        padding: 3rem 2rem;
+        margin: 2rem auto;
+        max-width: 1200px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .test-section h2 {
+        color: #333;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #667eea;
+      }
+      .test-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+      .test-card {
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+      }
+      .test-card h3 {
+        color: #667eea;
+        margin-bottom: 1rem;
+      }
+      .click-zone {
+        padding: 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .click-zone:hover {
+        transform: scale(1.02);
+      }
+      .heatmap-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .heatmap-cell {
+        aspect-ratio: 1;
+        background: #e9ecef;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        transition: all 0.2s;
+      }
+      .heatmap-cell:hover {
+        background: #667eea;
+        color: white;
+      }
+      .funnel-step {
+        padding: 1rem;
+        margin: 0.5rem 0;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .funnel-step:hover {
+        transform: translateX(10px);
+      }
+      .funnel-step.completed {
+        background: linear-gradient(90deg, #11998e, #38ef7d);
+      }
+      .segment-btn {
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .segment-btn.user { background: #667eea; color: white; }
+      .segment-btn.org { background: #11998e; color: white; }
+      .segment-btn:hover { transform: scale(1.05); }
+      .form-analytics input,
+      .form-analytics select,
+      .form-analytics textarea {
+        width: 100%;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+      .form-analytics input:focus,
+      .form-analytics select:focus,
+      .form-analytics textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+      .traffic-source {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        background: #f8f9fa;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .traffic-source:hover {
+        background: #e9ecef;
+      }
+      .traffic-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+      }
+      .engineering-metric {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .metric-value {
+        font-weight: bold;
+        color: #667eea;
+      }
+      .scroll-tracker {
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 1rem;
+      }
+      .scroll-content {
+        height: 800px;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #11998e 100%);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        color: white;
+      }
+      .interaction-log {
+        max-height: 200px;
+        overflow-y: auto;
+        background: #1a1a2e;
+        color: #00ff00;
+        padding: 1rem;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 0.85rem;
+      }
+      .tab-nav {
+        display: flex;
+        border-bottom: 2px solid #e9ecef;
+        margin-bottom: 1rem;
+      }
+      .tab-btn {
+        padding: 1rem 2rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-weight: 500;
+        color: #666;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+      }
+      .tab-btn.active {
+        color: #667eea;
+        border-bottom-color: #667eea;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">Uzera Analytics - Feature Testing</div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Back to Main</a></li>
+          <li><a href="#session" class="active">Session Replay</a></li>
+          <li><a href="#heatmap">Heatmaps</a></li>
+          <li><a href="#funnel">Funnels</a></li>
+          <li><a href="#analytics">Analytics</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Interaction Log -->
+    <div style="max-width: 1200px; margin: 1rem auto; padding: 0 2rem;">
+      <div class="interaction-log" id="interactionLog">
+        <div>>>> Uzera Analytics Feature Test Console</div>
+        <div>>>> Tracking initialized...</div>
+      </div>
+    </div>
+
+    <!-- Session Replay Testing -->
+    <section class="test-section" id="session">
+      <h2>Session Replay Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Interact with elements below to generate session replay data</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>Mouse Movement Tracking</h3>
+          <div class="click-zone" id="mouseZone" onmousemove="trackMouse(event)" onclick="trackClick(event)">
+            Move your mouse here<br>and click anywhere
+            <div id="mouseCoords" style="margin-top: 1rem; font-size: 0.9rem;">X: 0, Y: 0</div>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Scroll Tracking</h3>
+          <div class="scroll-tracker" id="scrollArea" onscroll="trackScroll(event)">
+            <div class="scroll-content">
+              <div>Scroll Start (0%)</div>
+              <div>Keep scrolling...</div>
+              <div>Middle (50%)</div>
+              <div>Almost there...</div>
+              <div>Scroll End (100%)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Keyboard Input Tracking</h3>
+          <input type="text" id="keyboardInput" placeholder="Type something here..." onkeyup="trackKeyboard(event)" style="width: 100%; padding: 1rem; font-size: 1rem;">
+          <div id="keyCount" style="margin-top: 0.5rem; color: #666;">Keystrokes: 0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Heatmap Testing -->
+    <section class="test-section" id="heatmap">
+      <h2>Heatmap Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Click on cells to simulate heatmap data collection</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>Click Heatmap Grid</h3>
+          <div class="heatmap-grid" id="heatmapGrid">
+            <!-- Generated by JS -->
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Attention Zones</h3>
+          <div style="position: relative;">
+            <div class="click-zone" style="height: 200px;" onclick="trackAttention('hero-banner')">
+              Hero Banner Area<br>(High attention expected)
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+              <div class="click-zone" style="flex: 1; padding: 1rem;" onclick="trackAttention('cta-left')">CTA Left</div>
+              <div class="click-zone" style="flex: 1; padding: 1rem;" onclick="trackAttention('cta-right')">CTA Right</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Segmentation Testing -->
+    <section class="test-section" id="segmentation">
+      <h2>Segmentation Testing (Users & Organizations)</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Test user and organization identification</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>User Segmentation</h3>
+          <button class="segment-btn user" onclick="identifyUser('free')">Free User</button>
+          <button class="segment-btn user" onclick="identifyUser('premium')">Premium User</button>
+          <button class="segment-btn user" onclick="identifyUser('enterprise')">Enterprise User</button>
+          <button class="segment-btn user" onclick="identifyUser('trial')">Trial User</button>
+
+          <div style="margin-top: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #666;">Custom User ID:</label>
+            <input type="text" id="customUserId" placeholder="Enter user ID">
+            <button class="segment-btn user" onclick="identifyCustomUser()" style="margin-top: 0.5rem;">Identify</button>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Organization Segmentation</h3>
+          <button class="segment-btn org" onclick="identifyOrg('startup')">Startup</button>
+          <button class="segment-btn org" onclick="identifyOrg('smb')">SMB</button>
+          <button class="segment-btn org" onclick="identifyOrg('enterprise')">Enterprise</button>
+          <button class="segment-btn org" onclick="identifyOrg('agency')">Agency</button>
+
+          <div style="margin-top: 1rem;">
+            <label style="display: block; margin-bottom: 0.5rem; color: #666;">Custom Org ID:</label>
+            <input type="text" id="customOrgId" placeholder="Enter organization ID">
+            <button class="segment-btn org" onclick="identifyCustomOrg()" style="margin-top: 0.5rem;">Identify</button>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>User Properties</h3>
+          <div class="form-analytics">
+            <input type="text" id="userPropName" placeholder="Property name">
+            <input type="text" id="userPropValue" placeholder="Property value">
+            <button class="segment-btn user" onclick="setUserProperty()">Set Property</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Analytics Testing -->
+    <section class="test-section" id="form-analytics">
+      <h2>Form Analytics Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Track form interactions, field focus, and abandonment</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>Lead Capture Form</h3>
+          <form class="form-analytics" id="leadForm" onsubmit="submitForm(event, 'lead')">
+            <input type="text" name="fullName" placeholder="Full Name" onfocus="trackFieldFocus('fullName')" onblur="trackFieldBlur('fullName')">
+            <input type="email" name="email" placeholder="Email Address" onfocus="trackFieldFocus('email')" onblur="trackFieldBlur('email')">
+            <input type="tel" name="phone" placeholder="Phone Number" onfocus="trackFieldFocus('phone')" onblur="trackFieldBlur('phone')">
+            <select name="interest" onfocus="trackFieldFocus('interest')" onchange="trackFieldChange('interest', this.value)">
+              <option value="">Select your interest</option>
+              <option value="analytics">Analytics</option>
+              <option value="heatmaps">Heatmaps</option>
+              <option value="session-replay">Session Replay</option>
+              <option value="all">All Features</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Lead</button>
+          </form>
+        </div>
+
+        <div class="test-card">
+          <h3>Checkout Form</h3>
+          <form class="form-analytics" id="checkoutForm" onsubmit="submitForm(event, 'checkout')">
+            <input type="text" name="cardName" placeholder="Name on Card" onfocus="trackFieldFocus('cardName')" onblur="trackFieldBlur('cardName')">
+            <input type="text" name="cardNumber" placeholder="Card Number" onfocus="trackFieldFocus('cardNumber')" onblur="trackFieldBlur('cardNumber')">
+            <div style="display: flex; gap: 10px;">
+              <input type="text" name="expiry" placeholder="MM/YY" style="flex: 1;" onfocus="trackFieldFocus('expiry')" onblur="trackFieldBlur('expiry')">
+              <input type="text" name="cvv" placeholder="CVV" style="flex: 1;" onfocus="trackFieldFocus('cvv')" onblur="trackFieldBlur('cvv')">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Complete Purchase</button>
+          </form>
+        </div>
+
+        <div class="test-card">
+          <h3>Feedback Form</h3>
+          <form class="form-analytics" id="feedbackForm" onsubmit="submitForm(event, 'feedback')">
+            <select name="rating" onfocus="trackFieldFocus('rating')" onchange="trackFieldChange('rating', this.value)">
+              <option value="">Rate your experience</option>
+              <option value="5">Excellent (5)</option>
+              <option value="4">Good (4)</option>
+              <option value="3">Average (3)</option>
+              <option value="2">Poor (2)</option>
+              <option value="1">Very Poor (1)</option>
+            </select>
+            <textarea name="comments" rows="4" placeholder="Your comments..." onfocus="trackFieldFocus('comments')" onblur="trackFieldBlur('comments')"></textarea>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Feedback</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Funnel Testing -->
+    <section class="test-section" id="funnel">
+      <h2>Funnel Analytics Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Simulate user journey through conversion funnels</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>E-commerce Funnel</h3>
+          <div id="ecommerceFunnel">
+            <div class="funnel-step" onclick="advanceFunnel('ecommerce', 1, this)">1. View Product</div>
+            <div class="funnel-step" onclick="advanceFunnel('ecommerce', 2, this)">2. Add to Cart</div>
+            <div class="funnel-step" onclick="advanceFunnel('ecommerce', 3, this)">3. Begin Checkout</div>
+            <div class="funnel-step" onclick="advanceFunnel('ecommerce', 4, this)">4. Enter Payment</div>
+            <div class="funnel-step" onclick="advanceFunnel('ecommerce', 5, this)">5. Complete Purchase</div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;" onclick="resetFunnel('ecommerce')">Reset Funnel</button>
+        </div>
+
+        <div class="test-card">
+          <h3>SaaS Signup Funnel</h3>
+          <div id="saasFunnel">
+            <div class="funnel-step" onclick="advanceFunnel('saas', 1, this)">1. Landing Page Visit</div>
+            <div class="funnel-step" onclick="advanceFunnel('saas', 2, this)">2. View Pricing</div>
+            <div class="funnel-step" onclick="advanceFunnel('saas', 3, this)">3. Start Free Trial</div>
+            <div class="funnel-step" onclick="advanceFunnel('saas', 4, this)">4. Complete Onboarding</div>
+            <div class="funnel-step" onclick="advanceFunnel('saas', 5, this)">5. Convert to Paid</div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;" onclick="resetFunnel('saas')">Reset Funnel</button>
+        </div>
+
+        <div class="test-card">
+          <h3>Content Engagement Funnel</h3>
+          <div id="contentFunnel">
+            <div class="funnel-step" onclick="advanceFunnel('content', 1, this)">1. Article View</div>
+            <div class="funnel-step" onclick="advanceFunnel('content', 2, this)">2. Scroll to 50%</div>
+            <div class="funnel-step" onclick="advanceFunnel('content', 3, this)">3. Scroll to 100%</div>
+            <div class="funnel-step" onclick="advanceFunnel('content', 4, this)">4. Click Related</div>
+            <div class="funnel-step" onclick="advanceFunnel('content', 5, this)">5. Subscribe</div>
+          </div>
+          <button class="btn btn-outline" style="margin-top: 1rem; width: 100%;" onclick="resetFunnel('content')">Reset Funnel</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Traffic Analytics Testing -->
+    <section class="test-section" id="traffic">
+      <h2>Traffic Analytics Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Simulate different traffic sources and campaigns</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>Traffic Sources</h3>
+          <div class="traffic-source" onclick="trackTrafficSource('organic', 'google')">
+            <span class="traffic-icon">&#128269;</span>
+            <div>
+              <strong>Organic Search</strong>
+              <div style="color: #666; font-size: 0.9rem;">Google</div>
+            </div>
+          </div>
+          <div class="traffic-source" onclick="trackTrafficSource('social', 'facebook')">
+            <span class="traffic-icon">&#128101;</span>
+            <div>
+              <strong>Social Media</strong>
+              <div style="color: #666; font-size: 0.9rem;">Facebook</div>
+            </div>
+          </div>
+          <div class="traffic-source" onclick="trackTrafficSource('paid', 'google-ads')">
+            <span class="traffic-icon">&#128176;</span>
+            <div>
+              <strong>Paid Ads</strong>
+              <div style="color: #666; font-size: 0.9rem;">Google Ads</div>
+            </div>
+          </div>
+          <div class="traffic-source" onclick="trackTrafficSource('referral', 'partner-site')">
+            <span class="traffic-icon">&#128279;</span>
+            <div>
+              <strong>Referral</strong>
+              <div style="color: #666; font-size: 0.9rem;">Partner Site</div>
+            </div>
+          </div>
+          <div class="traffic-source" onclick="trackTrafficSource('email', 'newsletter')">
+            <span class="traffic-icon">&#128231;</span>
+            <div>
+              <strong>Email</strong>
+              <div style="color: #666; font-size: 0.9rem;">Newsletter</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Campaign Tracking</h3>
+          <div class="form-analytics">
+            <input type="text" id="utmSource" placeholder="utm_source (e.g., google)">
+            <input type="text" id="utmMedium" placeholder="utm_medium (e.g., cpc)">
+            <input type="text" id="utmCampaign" placeholder="utm_campaign (e.g., spring_sale)">
+            <input type="text" id="utmContent" placeholder="utm_content (e.g., banner_1)">
+            <button class="btn btn-primary" style="width: 100%;" onclick="trackCampaign()">Track Campaign</button>
+          </div>
+        </div>
+
+        <div class="test-card">
+          <h3>Page View Simulation</h3>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="trackPageView('/home')">View Home Page</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="trackPageView('/products')">View Products</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="trackPageView('/pricing')">View Pricing</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="trackPageView('/checkout')">View Checkout</button>
+          <button class="btn btn-outline" style="width: 100%;" onclick="trackPageView('/thank-you')">View Thank You</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Engineering Analytics Testing -->
+    <section class="test-section" id="engineering">
+      <h2>Engineering Analytics Testing</h2>
+      <p style="color: #666; margin-bottom: 1.5rem;">Track performance metrics and errors</p>
+
+      <div class="test-grid">
+        <div class="test-card">
+          <h3>Performance Metrics</h3>
+          <div class="engineering-metric">
+            <span>Page Load Time</span>
+            <span class="metric-value" id="loadTime">-</span>
+          </div>
+          <div class="engineering-metric">
+            <span>DOM Content Loaded</span>
+            <span class="metric-value" id="domTime">-</span>
+          </div>
+          <div class="engineering-metric">
+            <span>First Paint</span>
+            <span class="metric-value" id="firstPaint">-</span>
+          </div>
+          <div class="engineering-metric">
+            <span>Memory Usage</span>
+            <span class="metric-value" id="memoryUsage">-</span>
+          </div>
+          <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="measurePerformance()">Measure Performance</button>
+        </div>
+
+        <div class="test-card">
+          <h3>Error Simulation</h3>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="simulateError('javascript')">Trigger JS Error</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="simulateError('network')">Trigger Network Error</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="simulateError('timeout')">Trigger Timeout</button>
+          <button class="btn btn-outline" style="width: 100%; margin-bottom: 0.5rem;" onclick="simulateError('api')">Trigger API Error</button>
+          <button class="btn btn-outline" style="width: 100%;" onclick="simulateError('validation')">Trigger Validation Error</button>
+        </div>
+
+        <div class="test-card">
+          <h3>Custom Events</h3>
+          <div class="form-analytics">
+            <input type="text" id="eventName" placeholder="Event name (e.g., button_click)">
+            <input type="text" id="eventCategory" placeholder="Category (e.g., engagement)">
+            <input type="text" id="eventValue" placeholder="Value (optional)">
+            <button class="btn btn-primary" style="width: 100%;" onclick="trackCustomEvent()">Track Event</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Uzera Analytics Testing</h4>
+          <p style="color: #bdc3c7; line-height: 1.6;">
+            Test page for analytics features
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Uzera Analytics. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Interaction logging
+      function logInteraction(message) {
+        const log = document.getElementById('interactionLog');
+        const timestamp = new Date().toLocaleTimeString();
+        log.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+        log.scrollTop = log.scrollHeight;
+
+        // Also track with Uzera
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('interaction_log', { message: message });
+        }
+      }
+
+      // Session Replay Functions
+      let keystrokes = 0;
+
+      function trackMouse(event) {
+        const rect = event.target.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
+        document.getElementById('mouseCoords').textContent = `X: ${x}, Y: ${y}`;
+      }
+
+      function trackClick(event) {
+        logInteraction(`Click at position (${event.offsetX}, ${event.offsetY})`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('click_tracking', { x: event.offsetX, y: event.offsetY });
+        }
+      }
+
+      function trackScroll(event) {
+        const element = event.target;
+        const scrollPercent = Math.round((element.scrollTop / (element.scrollHeight - element.clientHeight)) * 100);
+        logInteraction(`Scroll depth: ${scrollPercent}%`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('scroll_tracking', { depth: scrollPercent });
+        }
+      }
+
+      function trackKeyboard(event) {
+        keystrokes++;
+        document.getElementById('keyCount').textContent = `Keystrokes: ${keystrokes}`;
+        if (keystrokes % 10 === 0) {
+          logInteraction(`Keyboard input: ${keystrokes} keystrokes recorded`);
+        }
+      }
+
+      // Heatmap Functions
+      function initHeatmapGrid() {
+        const grid = document.getElementById('heatmapGrid');
+        for (let i = 1; i <= 16; i++) {
+          const cell = document.createElement('div');
+          cell.className = 'heatmap-cell';
+          cell.textContent = i;
+          cell.onclick = () => trackHeatmapClick(i, cell);
+          grid.appendChild(cell);
+        }
+      }
+
+      function trackHeatmapClick(cellId, element) {
+        const clicks = parseInt(element.dataset.clicks || 0) + 1;
+        element.dataset.clicks = clicks;
+        element.style.background = `rgba(102, 126, 234, ${Math.min(clicks * 0.2, 1)})`;
+        element.style.color = clicks > 2 ? 'white' : 'black';
+        logInteraction(`Heatmap cell ${cellId} clicked (${clicks} times)`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('heatmap_click', { cell: cellId, clicks: clicks });
+        }
+      }
+
+      function trackAttention(zone) {
+        logInteraction(`Attention zone clicked: ${zone}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('attention_tracking', { zone: zone });
+        }
+      }
+
+      // Segmentation Functions
+      function identifyUser(type) {
+        const userId = `user_${type}_${Date.now()}`;
+        logInteraction(`User identified: ${type} (${userId})`);
+        if (window.uzera && window.uzera.identify) {
+          window.uzera.identify(userId, { userType: type, plan: type });
+        }
+      }
+
+      function identifyCustomUser() {
+        const userId = document.getElementById('customUserId').value;
+        if (userId) {
+          logInteraction(`Custom user identified: ${userId}`);
+          if (window.uzera && window.uzera.identify) {
+            window.uzera.identify(userId, { custom: true });
+          }
+        }
+      }
+
+      function identifyOrg(type) {
+        const orgId = `org_${type}_${Date.now()}`;
+        logInteraction(`Organization identified: ${type} (${orgId})`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('org_identify', { orgId: orgId, orgType: type });
+        }
+      }
+
+      function identifyCustomOrg() {
+        const orgId = document.getElementById('customOrgId').value;
+        if (orgId) {
+          logInteraction(`Custom organization identified: ${orgId}`);
+          if (window.uzera && window.uzera.trackEvent) {
+            window.uzera.trackEvent('org_identify', { orgId: orgId, custom: true });
+          }
+        }
+      }
+
+      function setUserProperty() {
+        const name = document.getElementById('userPropName').value;
+        const value = document.getElementById('userPropValue').value;
+        if (name && value) {
+          logInteraction(`User property set: ${name} = ${value}`);
+          if (window.uzera && window.uzera.trackEvent) {
+            window.uzera.trackEvent('user_property', { property: name, value: value });
+          }
+        }
+      }
+
+      // Form Analytics Functions
+      function trackFieldFocus(fieldName) {
+        logInteraction(`Form field focused: ${fieldName}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('form_field_focus', { field: fieldName });
+        }
+      }
+
+      function trackFieldBlur(fieldName) {
+        logInteraction(`Form field blur: ${fieldName}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('form_field_blur', { field: fieldName });
+        }
+      }
+
+      function trackFieldChange(fieldName, value) {
+        logInteraction(`Form field changed: ${fieldName} = ${value}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('form_field_change', { field: fieldName, value: value });
+        }
+      }
+
+      function submitForm(event, formType) {
+        event.preventDefault();
+        logInteraction(`Form submitted: ${formType}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('form_submit', { formType: formType });
+        }
+        alert(`${formType} form submitted successfully!`);
+      }
+
+      // Funnel Functions
+      const funnelStates = {
+        ecommerce: 0,
+        saas: 0,
+        content: 0
+      };
+
+      function advanceFunnel(funnelType, step, element) {
+        if (step === funnelStates[funnelType] + 1) {
+          funnelStates[funnelType] = step;
+          element.classList.add('completed');
+          logInteraction(`Funnel ${funnelType}: Step ${step} completed`);
+          if (window.uzera && window.uzera.trackEvent) {
+            window.uzera.trackEvent('funnel_step', { funnel: funnelType, step: step });
+          }
+        } else if (step > funnelStates[funnelType] + 1) {
+          logInteraction(`Funnel ${funnelType}: Cannot skip to step ${step}`);
+        }
+      }
+
+      function resetFunnel(funnelType) {
+        funnelStates[funnelType] = 0;
+        const container = document.getElementById(`${funnelType}Funnel`);
+        container.querySelectorAll('.funnel-step').forEach(step => {
+          step.classList.remove('completed');
+        });
+        logInteraction(`Funnel ${funnelType}: Reset`);
+      }
+
+      // Traffic Analytics Functions
+      function trackTrafficSource(type, source) {
+        logInteraction(`Traffic source: ${type} from ${source}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('traffic_source', { type: type, source: source });
+        }
+      }
+
+      function trackCampaign() {
+        const campaign = {
+          source: document.getElementById('utmSource').value,
+          medium: document.getElementById('utmMedium').value,
+          campaign: document.getElementById('utmCampaign').value,
+          content: document.getElementById('utmContent').value
+        };
+        logInteraction(`Campaign tracked: ${JSON.stringify(campaign)}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('campaign_tracking', campaign);
+        }
+      }
+
+      function trackPageView(page) {
+        logInteraction(`Page view: ${page}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('page_view', { page: page });
+        }
+      }
+
+      // Engineering Analytics Functions
+      function measurePerformance() {
+        const perf = performance.getEntriesByType('navigation')[0];
+        if (perf) {
+          document.getElementById('loadTime').textContent = `${Math.round(perf.loadEventEnd - perf.startTime)}ms`;
+          document.getElementById('domTime').textContent = `${Math.round(perf.domContentLoadedEventEnd - perf.startTime)}ms`;
+        }
+
+        const paintEntries = performance.getEntriesByType('paint');
+        const firstPaint = paintEntries.find(e => e.name === 'first-paint');
+        if (firstPaint) {
+          document.getElementById('firstPaint').textContent = `${Math.round(firstPaint.startTime)}ms`;
+        }
+
+        if (performance.memory) {
+          const usedMB = Math.round(performance.memory.usedJSHeapSize / 1048576);
+          document.getElementById('memoryUsage').textContent = `${usedMB}MB`;
+        } else {
+          document.getElementById('memoryUsage').textContent = 'N/A';
+        }
+
+        logInteraction('Performance metrics measured');
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('performance_measured', {
+            loadTime: document.getElementById('loadTime').textContent,
+            domTime: document.getElementById('domTime').textContent
+          });
+        }
+      }
+
+      function simulateError(errorType) {
+        logInteraction(`Error simulated: ${errorType}`);
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('error_simulation', { type: errorType });
+        }
+
+        switch(errorType) {
+          case 'javascript':
+            try {
+              throw new Error('Simulated JavaScript Error');
+            } catch(e) {
+              logInteraction(`JS Error: ${e.message}`);
+            }
+            break;
+          case 'network':
+            fetch('https://invalid-url-that-does-not-exist.com/api')
+              .catch(e => logInteraction(`Network Error: ${e.message}`));
+            break;
+          case 'timeout':
+            logInteraction('Timeout Error: Request timed out after 30s');
+            break;
+          case 'api':
+            logInteraction('API Error: 500 Internal Server Error');
+            break;
+          case 'validation':
+            logInteraction('Validation Error: Invalid input format');
+            break;
+        }
+      }
+
+      function trackCustomEvent() {
+        const eventName = document.getElementById('eventName').value;
+        const category = document.getElementById('eventCategory').value;
+        const value = document.getElementById('eventValue').value;
+
+        if (eventName) {
+          logInteraction(`Custom event: ${eventName} (${category})`);
+          if (window.uzera && window.uzera.trackEvent) {
+            window.uzera.trackEvent(eventName, { category: category, value: value });
+          }
+        }
+      }
+
+      // Initialize
+      document.addEventListener('DOMContentLoaded', function() {
+        initHeatmapGrid();
+        logInteraction('Feature testing page loaded');
+
+        // Track initial page load
+        if (window.uzera && window.uzera.trackEvent) {
+          window.uzera.trackEvent('page_load', { page: 'feature_testing' });
+        }
+      });
+    </script>
+  </body>
+</html>
